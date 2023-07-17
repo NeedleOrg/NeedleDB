@@ -3,7 +3,7 @@ Property to set the default file that the [`DATABASE`](https://github.com/Needle
 
 ### Modifiable with:
 
-[`DATABASE`](https://github.com/NeedleChat/NeedleDB/blob/docs/docs/DATABASE.md)
+[`DATABASE()`](https://github.com/NeedleChat/NeedleDB/blob/docs/docs/DATABASE.md)
 
 `SETDEFFILE()`
 
