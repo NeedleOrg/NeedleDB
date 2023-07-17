@@ -4,7 +4,7 @@ Main database class, has multiple child functions and all of its values are set 
 
 ### Usage:
 
-`const myDB = new require('Needle-db')(FILENAME, AUTOSAVE)`
+`const myDB = new require('needle-db')(FILENAME, AUTOSAVE)`
 
 ## FILENAME
 
