@@ -8,7 +8,7 @@ Main database class, has multiple child functions and all of its values are set 
 
 ## FILENAME
 
-Property used when creating a new Database, used for setting the `#FILENAME` property upon creating a new Database. Defaults `null`.
+Property used when creating a new Database, used for setting the [`#FILENAME`](https://github.com/NeedleChat/NeedleDB/blob/docs/docs/DATABASE/properties/%23FILENAME.md) property upon creating a new Database. Defaults `null`.
 
 ## AUTOSAVE
 
