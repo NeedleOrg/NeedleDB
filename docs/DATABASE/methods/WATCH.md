@@ -5,7 +5,7 @@ Watches for any change on the JSON file specified and updates [`#DATA`](https://
 ## FILENAME
 JSON file directory and name formatted with NeedleDB, defaults [`#FILENAME`](https://github.com/NeedleChat/NeedleDB/blob/docs/docs/DATABASE/properties/%23FILENAME.md)
   
-## Outputs
+## Operation Codes
 
 ### `Code 1`
 Watch operation started with no error. (unexistent files may return code 1)
