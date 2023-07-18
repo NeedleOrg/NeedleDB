@@ -12,4 +12,4 @@ Property used when creating a new Database, used for setting the [`#FILENAME`](h
 
 ## AUTOSAVE
 
-Property used when creating a new Database, used for setting the `#AUTOSAVE` property upon creating a new Database, needs to have a default filename before using. Defaults `false`
+Property used when creating a new Database, used for setting the [`#AUTOSAVE`](https://github.com/NeedleChat/NeedleDB/blob/docs/docs/DATABASE/properties/%23AUTOSAVE.md) property upon creating a new Database, needs to have a default filename before using. Defaults `false`
