@@ -1,6 +1,6 @@
 # AUTOSAVE(CONTROL, AUTOFILE)
 
-**Usage:** `AUTOSAVE(CONTROL, AUTOFILE)`
+**Usage:**  [`DATABASE.AUTOSAVE(CONTROL, AUTOFILE)`](https://github.com/NeedleChat/NeedleDB/blob/docs/docs/DATABASE.md)
 
 Configures the autosave configurations.
 
