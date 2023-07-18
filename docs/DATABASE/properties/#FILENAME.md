@@ -5,7 +5,7 @@ Property to set the default file that the [`DATABASE`](https://github.com/Needle
 
 [`DATABASE()`](https://github.com/NeedleChat/NeedleDB/blob/docs/docs/DATABASE.md)
 
-`SETDEFFILE()`
+[`SETDEFFILE()`](https://github.com/NeedleChat/NeedleDB/blob/docs/docs/DATABASE/methods/SETDEFFILE.md)
 
 ### Retrieve with:
 `GETDEFILE()`
