@@ -1,3 +1,4 @@
+###### Not to be confused with [`DATABASE.DELETECOLUMN()`](https://github.com/NeedleChat/NeedleDB/blob/docs/docs/DATABASE/methods/DELETECOLUMN.md)
 # CLEARCOLUMN(COLUMN)
 **Usage:** [`DATABASE.CLEARCOLUMN(COLUMN)`](https://github.com/NeedleChat/NeedleDB/blob/docs/docs/DATABASE.md)
 
