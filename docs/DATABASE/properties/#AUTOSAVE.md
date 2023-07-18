@@ -5,4 +5,4 @@ Boolean that controls if the [`DATABASE`](https://github.com/NeedleChat/NeedleDB
 [`AUTOSAVE()`](https://github.com/NeedleChat/NeedleDB/blob/docs/docs/DATABASE/methods/AUTOSAVE.md)
 
 ### Retrievable with:
-`AUTOSAVESTATUS()`
+[`AUTOSAVESTATUS()`](https://github.com/NeedleChat/NeedleDB/blob/docs/docs/DATABASE/methods/AUTOSAVESTATUS.md)
