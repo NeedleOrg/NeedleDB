@@ -7,8 +7,8 @@ JSON file directory and name formatted with NeedleDB, defaults [`#FILENAME`](htt
   
 ## Operation Codes
 
-### `Code 1`
+##### `Code 1`
 Watch operation started with no error. (unexistent files may return code 1)
 
-### `Code -1`
+##### `Code -1`
 File not specified.
