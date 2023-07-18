@@ -1,5 +1,6 @@
 # #DATA
-Private property that contains all saved data of each [`DATABASE`](https://github.com/NeedleChat/NeedleDB/blob/docs/docs/DATABASE.md) row, whole data retrievable on JSON with `GETJSONDATA()`. Specific reading can be used with `READ(INDEX, COLUMN)` or `GET(INDEX)`. Unreachable without those methods.
+Private property that contains all saved data of each [`DATABASE`](https://github.com/NeedleChat/NeedleDB/blob/docs/docs/DATABASE.md) row, whole data retrievable on JSON with [`GETJSONDATA()`](https://github.com/NeedleChat/NeedleDB/blob/docs/docs/DATABASE/methods/GETJSONDATA.md)
+. Specific reading can be used with [`READ()`](https://github.com/NeedleChat/NeedleDB/blob/docs/docs/DATABASE/methods/READ.md) or [`GET()`](https://github.com/NeedleChat/NeedleDB/blob/docs/docs/DATABASE/methods/GET.md). Unreachable without those methods.
 
 ### Modifiable with:
 [`WATCH()`](https://github.com/NeedleChat/NeedleDB/blob/docs/docs/DATABASE/methods/WATCH.md)
