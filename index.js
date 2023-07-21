@@ -364,6 +364,10 @@ class DATABASE {
     GETAUTOFILE(){
         return this.#AUTOFILE
     }
+
+    GETINDEXLENGTH(){
+        return this.#DATA.length
+    }
 }
 
 module.exports = DATABASE
