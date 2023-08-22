@@ -166,7 +166,7 @@ class DATABASE {
     }
   }
 
-  REPLACECOLUMN(COLUMNN, VALUE){
+  REPLACECOLUMN(COLUMN, VALUE){
     let ColumnExists = false;
 
     this.#COLUMNS.forEach((e, i, a) => {
@@ -179,6 +179,10 @@ class DATABASE {
       this.#DATA.forEach((e,i,a)=>{
         e[COLUMN] = VALUE
       })
+
+      if (this.#AUTOSAVE) {
+        this.SAVE(this.#AUTOFILE);
+      }
     }else{
     }
   }
@@ -309,29 +313,31 @@ class DATABASE {
       }
     });
 
-    this.#COLUMNS.forEach((e,i,a)=>{
-      let tempCellValue
-      let tempValue
-      if(typeof e[COLUMN] === 'string'){
-        tempCellValue = e[COLUMN].toUpperCase()
-      }else{
-        tempCellValue = e[COLUMN]
-      }
+    if(ColumnExists){
+      this.#DATA.forEach((e,i,a)=>{
+        let tempCellValue
+        let tempValue
+        if(typeof e[COLUMN] === 'string'){
+          tempCellValue = e[COLUMN].toUpperCase()
+        }else{
+          tempCellValue = e[COLUMN]
+        }
 
-      if(typeof VALUE === 'string'){
-        tempValue = VALUE.toUpperCase()
-      }else{
-        tempValue = VALUE
-      }
+        if(typeof VALUE === 'string'){
+          tempValue = VALUE.toUpperCase()
+        }else{
+          tempValue = VALUE
+        }
 
-      if(tempCellValue === tempValue){
-        MATCHINGINDEXES.push(i)
-      }else{
+        if(tempCellValue === tempValue){
+          MATCHINGINDEXES.push(i)
+        }else{
 
-      }
-    })
+        }
+      })
 
-    return MATCHINGINDEXES
+      return MATCHINGINDEXES
+    }
   }
 
   FINDQUICKINDEX(COLUMN, VALUE) {
