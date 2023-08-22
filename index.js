@@ -166,6 +166,27 @@ class DATABASE {
     }
   }
 
+  REPLACECOLUMN(COLUMN, VALUE){
+    let ColumnExists = false;
+
+    this.#COLUMNS.forEach((e, i, a) => {
+      if (e === COLUMN) {
+        ColumnExists = true;
+      }
+    });
+
+    if(ColumnExists){
+      this.#DATA.forEach((e,i,a)=>{
+        e[COLUMN] = VALUE
+      })
+
+      if (this.#AUTOSAVE) {
+        this.SAVE(this.#AUTOFILE);
+      }
+    }else{
+    }
+  }
+
   READ(INDEX, COLUMN) {
     if (typeof this.#DATA[INDEX][COLUMN] !== "undefined") {
       return this.#DATA[INDEX][COLUMN];
@@ -282,9 +303,66 @@ class DATABASE {
     return new PUSHFORMAT();
   }
 
-  FINDINDEX(COLUMN, VALUE) {
+  SEARCH(COLUMN, VALUE){
+    let MATCHINGINDEXES = []
+    let ColumnExists = false;
+
+    this.#COLUMNS.forEach((e, i, a) => {
+      if (e === COLUMN) {
+        ColumnExists = true;
+      }
+    });
+
+    if(ColumnExists){
+      this.#DATA.forEach((e,i,a)=>{
+        let tempCellValue
+        let tempValue
+        if(typeof e[COLUMN] === 'string'){
+          tempCellValue = e[COLUMN].toUpperCase()
+        }else{
+          tempCellValue = e[COLUMN]
+        }
+
+        if(typeof VALUE === 'string'){
+          tempValue = VALUE.toUpperCase()
+        }else{
+          tempValue = VALUE
+        }
+
+        if(tempCellValue === tempValue){
+          MATCHINGINDEXES.push(i)
+        }else{
+
+        }
+      })
+
+      return MATCHINGINDEXES
+    }
+  }
+
+  FINDQUICKINDEX(COLUMN, VALUE) {
     const INDEX = this.#DATA.findIndex((DATA) => DATA[COLUMN] === VALUE);
     return INDEX;
+  }
+
+  COLUMNDATA(COLUMN) {
+    let ColumnExists = false;
+    let ColumnData = []
+    this.#COLUMNS.forEach((e, i, a) => {
+      if (e === COLUMN) {
+        ColumnExists = true;
+      }
+    });
+
+    if(ColumnExists){
+      this.#DATA.forEach((e,i,a)=>{
+        ColumnData[i] = e[COLUMN]
+      })
+
+      return ColumnData
+    }else{
+      return []
+    }
   }
 
   GETCOLUMNLIST() {
