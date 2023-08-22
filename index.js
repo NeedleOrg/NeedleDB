@@ -313,13 +313,13 @@ class DATABASE {
       let tempCellValue
       let tempValue
       if(typeof e[COLUMN] === 'string'){
-        tempCellValue === e[COLUMN].toUpperCase()
+        tempCellValue = e[COLUMN].toUpperCase()
       }else{
         tempCellValue = e[COLUMN]
       }
 
       if(typeof VALUE === 'string'){
-        tempValue === VALUE.toUpperCase()
+        tempValue = VALUE.toUpperCase()
       }else{
         tempValue = VALUE
       }
