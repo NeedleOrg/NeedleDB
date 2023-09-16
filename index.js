@@ -395,3 +395,5 @@ class DATABASE {
 }
 
 module.exports = DATABASE;
+
+// SQL, Whats that? We use Needle DB
