@@ -6,7 +6,7 @@ on:
    #- main
   create:
     tags:
-    - '-v'
+    - '*'
     
 jobs:
   build:
