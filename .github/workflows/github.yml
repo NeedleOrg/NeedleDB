@@ -1,10 +1,9 @@
 name: "Publish to GitHub"
 
 on:
-  #push:
+  push:
     #branches:
    #- main
-  create:
     tags:
     - '*'
     
