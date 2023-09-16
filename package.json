@@ -1,6 +1,6 @@
 {
   "name": "needle-db",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "A basic but useful node.js Database System",
   "main": "index.js",
   "scripts": {
