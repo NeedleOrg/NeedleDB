@@ -10,15 +10,20 @@ on:
 
 jobs:
 
-  zip-deploy:
+  release:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
-    - name: Archive Release
+    - name: Zip Process
       uses: thedoctor0/zip-release@master
       with:
         filename: 'needle-db.zip'
         exclusions: '*.git* /*node_modules/* .editorconfig *.md'
+    - name: Publish
+      uses: ncipollo/release-action@v1.12.0
+      with:
+        artifacts: "needle-db.zip"
+        token: ${{ secrets.GH_TOKEN }}
         
   build:
     runs-on: ubuntu-latest
@@ -27,7 +32,6 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
-      - run: npm test
 
   publish-npm:
     needs: build
