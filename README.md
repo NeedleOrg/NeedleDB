@@ -1,7 +1,6 @@
-# NeedleDB
+# NeedleDB <img src="https://github.com/ImSpeddy/ImSpeddy/blob/main/res/needledbround.png" width="25" height="25">
+Node.js Database system designed for everyone
 
-Easy node.js database system for beginners
+`npm i needle-db`
 
-### For installing head to [NPM](https://www.npmjs.com/package/needle-db) or type `npm i needle-db` on your terminal
-### For documentation head to [Docs](https://github.com/NeedleChat/NeedleDB/tree/docs/docs)
-### For guide head to [Start Here](https://github.com/NeedleChat/NeedleDB/blob/docs/guide/starthere.md)
+##### [Docs](https://github.com/NeedleChat/NeedleDB/tree/docs/docs) - [Guide](https://github.com/NeedleChat/NeedleDB/blob/docs/guide/starthere.md)
