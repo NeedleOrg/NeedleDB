@@ -1,41 +1,21 @@
 const fs = require("fs");
-const EventEmitter = require("events");
 
-class DATABASE extends EventEmitter{
+class DATABASE {
   #DATA = [];
   #FILENAME = "";
   #COLUMNS = [];
   #AUTOSAVE = false;
   #AUTOFILE = null;
-  #VERSION = 1.1
-  #EVENTS = false
-  constructor(FILENAME, AUTOSAVE, EVENTS) {
-    super();
-
+  constructor(FILENAME, AUTOSAVE) {
     if (FILENAME) {
       this.#FILENAME = FILENAME;
       this.LOAD();
-    }
-
-    if(EVENTS){
-      this.#EVENTS = true;
-    }else{
-      this.#EVENTS = false;
     }
 
     if (AUTOSAVE) {
       this.#AUTOSAVE = true;
     } else {
       this.#AUTOSAVE = false;
-    }
-
-  }
-
-  #EMIT(ACTION, DATA){
-    if(this.#EVENTS){
-      DATA.ACTION = ACTION
-      this.emit(ACTION, (DATA))
-      this.emit("CHANGE", (DATA))
     }
   }
 
@@ -76,13 +56,11 @@ class DATABASE extends EventEmitter{
     try {
       fs.writeFileSync(
         targetFilename,
-        JSON.stringify({ DATA: this.#DATA, COLUMNS: this.#COLUMNS, VERSION: this.#VERSION })
+        JSON.stringify({ DATA: this.#DATA, COLUMNS: this.#COLUMNS })
       );
-
-      this.#EMIT("SAVE", {FILENAME: targetFilename})
       return { code: 1 };
     } catch (error) {
-      return { code: -2, error: error };
+      return { code: -2, error };
     }
   }
 
@@ -93,22 +71,15 @@ class DATABASE extends EventEmitter{
    * @return {object} - An object indicating the success of the operation.
    */
   LOAD(FILENAME) {
-    try{
-      const content = fs.readFileSync(FILENAME || this.#FILENAME, "utf-8");
-      const parsedContent = JSON.parse(content);
-      this.#DATA = parsedContent.DATA || [];
-      this.#COLUMNS = parsedContent.COLUMNS || [];
-      this.#VERSION = parsedContent.VERSION || 1.1
-      this.#EMIT("LOAD", {FILENAME: FILENAME})
-      return { code: 1 };
-    } catch(error) {
-      return { code: -1 }
-    }
+    const content = fs.readFileSync(FILENAME || this.#FILENAME, "utf-8");
+    const parsedContent = JSON.parse(content);
+    this.#DATA = parsedContent.DATA || [];
+    this.#COLUMNS = parsedContent.COLUMNS || [];
+    
+    return { code: 1 };
   }
-
   SETDEFFILE(FILENAME) {
     this.#FILENAME = FILENAME;
-    this.#EMIT("SETDEFFILE", {FILENAME: this.#FILENAME})
   }
 
   NEWCOLUMN(NAME, DEFAULT) {
@@ -135,8 +106,6 @@ class DATABASE extends EventEmitter{
       if (this.#AUTOSAVE) {
         this.SAVE(this.#AUTOFILE);
       }
-
-      this.#EMIT("NEWCOLUMN", {NAME: NAME, DEFAULT, DEFAULT})
     }
   }
 
@@ -155,8 +124,6 @@ class DATABASE extends EventEmitter{
       if (this.#AUTOSAVE) {
         this.SAVE(this.#AUTOFILE);
       }
-
-      this.#EMIT("PUSH", {FORMAT: DAT, INDEX: this.#DATA.length-1})
       return { code: 1 };
     } else {
       return { code: -1 };
@@ -169,7 +136,6 @@ class DATABASE extends EventEmitter{
       if (this.#AUTOSAVE) {
         this.SAVE(this.#AUTOFILE);
       }
-      this.#EMIT("SET", {INDEX: INDEX, COLUMN: COLUMN, VALUE: VALUE})
       return { code: 1 };
     } else {
       return { code: -1 };
@@ -194,8 +160,6 @@ class DATABASE extends EventEmitter{
       if (this.#AUTOSAVE) {
         this.SAVE(this.#AUTOFILE);
       }
-
-      this.#EMIT("REPLACE", {INDEX: INDEX, DATA: DATA})
       return { code: 1 };
     } else {
       return { code: -1 };
@@ -219,7 +183,6 @@ class DATABASE extends EventEmitter{
       if (this.#AUTOSAVE) {
         this.SAVE(this.#AUTOFILE);
       }
-      this.#EMIT("REPLACECOLUMN", {COLUMN: COLUMN, VALUE: VALUE})
     }else{
     }
   }
@@ -245,7 +208,6 @@ class DATABASE extends EventEmitter{
     if (this.#AUTOSAVE) {
       this.SAVE(this.#AUTOFILE);
     }
-    this.#EMIT("REPLACECOLUMN", {COLUMN: COLUMN, VALUE: VALUE})
   }
 
   CLEARVALUE(INDEX, COLUMN) {
@@ -254,7 +216,6 @@ class DATABASE extends EventEmitter{
       if (this.#AUTOSAVE) {
         this.SAVE(this.#AUTOFILE);
       }
-      this.#EMIT("CLEARVALUE", {INDEX: INDEX, COLUMN: COLUMN})
     }
   }
 
@@ -274,8 +235,6 @@ class DATABASE extends EventEmitter{
           this.SAVE(this.#AUTOFILE);
         }
       });
-
-      this.#EMIT("CLEARCOLUMN", {COLUMN: COLUMN})
     } else {
     }
   }
@@ -297,8 +256,6 @@ class DATABASE extends EventEmitter{
           if (this.#AUTOSAVE) {
             this.SAVE(this.#AUTOFILE);
           }
-
-          this.#EMIT("DELETECOLUMN", {COLUMN: COLUMN})
         } else {
         }
       });
@@ -426,7 +383,6 @@ class DATABASE extends EventEmitter{
 
   SETAUTOFILE(AUTOFILE) {
     this.#AUTOFILE = AUTOFILE;
-    this.#EMIT("SETAUTOFILE", {AUTOFILE: this.#AUTOFILE})
   }
 
   GETAUTOFILE() {
@@ -435,20 +391,6 @@ class DATABASE extends EventEmitter{
 
   GETINDEXLENGTH() {
     return this.#DATA.length;
-  }
-
-  TOGGLEEVENTS(){
-    if(this.#EVENTS === false){
-      this.#EVENTS = true
-    }else if(this.#EVENTS === true){
-      this.#EVENTS = false
-    }
-  }
-
-  SETEVENTS(PARAM){
-    if(typeof PARAM === "boolean"){
-      this.#EVENTS = PARAM
-    }
   }
 }
 
