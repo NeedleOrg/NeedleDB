@@ -1,21 +1,41 @@
 const fs = require("fs");
+const EventEmitter = require("events");
 
-class DATABASE {
+class DATABASE extends EventEmitter{
   #DATA = [];
   #FILENAME = "";
   #COLUMNS = [];
   #AUTOSAVE = false;
   #AUTOFILE = null;
-  constructor(FILENAME, AUTOSAVE) {
+  #VERSION = 1.1
+  #EVENTS = false
+  constructor(FILENAME, AUTOSAVE, EVENTS) {
+    super();
+
     if (FILENAME) {
       this.#FILENAME = FILENAME;
       this.LOAD();
+    }
+
+    if(EVENTS){
+      this.#EVENTS = true;
+    }else{
+      this.#EVENTS = false;
     }
 
     if (AUTOSAVE) {
       this.#AUTOSAVE = true;
     } else {
       this.#AUTOSAVE = false;
+    }
+
+  }
+
+  #EMIT(ACTION, DATA){
+    if(this.#EVENTS){
+      DATA.ACTION = ACTION
+      this.emit(ACTION, (DATA))
+      this.emit("CHANGE", (DATA))
     }
   }
 
@@ -56,11 +76,13 @@ class DATABASE {
     try {
       fs.writeFileSync(
         targetFilename,
-        JSON.stringify({ DATA: this.#DATA, COLUMNS: this.#COLUMNS })
+        JSON.stringify({ DATA: this.#DATA, COLUMNS: this.#COLUMNS, VERSION: this.#VERSION })
       );
+
+      this.#EMIT("SAVE", {FILENAME: targetFilename})
       return { code: 1 };
     } catch (error) {
-      return { code: -2, error };
+      return { code: -2, error: error };
     }
   }
 
@@ -71,15 +93,22 @@ class DATABASE {
    * @return {object} - An object indicating the success of the operation.
    */
   LOAD(FILENAME) {
-    const content = fs.readFileSync(FILENAME || this.#FILENAME, "utf-8");
-    const parsedContent = JSON.parse(content);
-    this.#DATA = parsedContent.DATA || [];
-    this.#COLUMNS = parsedContent.COLUMNS || [];
-    
-    return { code: 1 };
+    try{
+      const content = fs.readFileSync(FILENAME || this.#FILENAME, "utf-8");
+      const parsedContent = JSON.parse(content);
+      this.#DATA = parsedContent.DATA || [];
+      this.#COLUMNS = parsedContent.COLUMNS || [];
+      this.#VERSION = parsedContent.VERSION || 1.1
+      this.#EMIT("LOAD", {FILENAME: FILENAME})
+      return { code: 1 };
+    } catch(error) {
+      return { code: -1 }
+    }
   }
+
   SETDEFFILE(FILENAME) {
     this.#FILENAME = FILENAME;
+    this.#EMIT("SETDEFFILE", {FILENAME: this.#FILENAME})
   }
 
   NEWCOLUMN(NAME, DEFAULT) {
@@ -106,6 +135,8 @@ class DATABASE {
       if (this.#AUTOSAVE) {
         this.SAVE(this.#AUTOFILE);
       }
+
+      this.#EMIT("NEWCOLUMN", {NAME: NAME, DEFAULT, DEFAULT})
     }
   }
 
@@ -124,6 +155,8 @@ class DATABASE {
       if (this.#AUTOSAVE) {
         this.SAVE(this.#AUTOFILE);
       }
+
+      this.#EMIT("PUSH", {FORMAT: DAT, INDEX: this.#DATA.length-1})
       return { code: 1 };
     } else {
       return { code: -1 };
@@ -136,6 +169,7 @@ class DATABASE {
       if (this.#AUTOSAVE) {
         this.SAVE(this.#AUTOFILE);
       }
+      this.#EMIT("SET", {INDEX: INDEX, COLUMN: COLUMN, VALUE: VALUE})
       return { code: 1 };
     } else {
       return { code: -1 };
@@ -160,6 +194,8 @@ class DATABASE {
       if (this.#AUTOSAVE) {
         this.SAVE(this.#AUTOFILE);
       }
+
+      this.#EMIT("REPLACE", {INDEX: INDEX, DATA: DATA})
       return { code: 1 };
     } else {
       return { code: -1 };
@@ -183,6 +219,7 @@ class DATABASE {
       if (this.#AUTOSAVE) {
         this.SAVE(this.#AUTOFILE);
       }
+      this.#EMIT("REPLACECOLUMN", {COLUMN: COLUMN, VALUE: VALUE})
     }else{
     }
   }
@@ -208,6 +245,7 @@ class DATABASE {
     if (this.#AUTOSAVE) {
       this.SAVE(this.#AUTOFILE);
     }
+    this.#EMIT("REPLACECOLUMN", {COLUMN: COLUMN, VALUE: VALUE})
   }
 
   CLEARVALUE(INDEX, COLUMN) {
@@ -216,6 +254,7 @@ class DATABASE {
       if (this.#AUTOSAVE) {
         this.SAVE(this.#AUTOFILE);
       }
+      this.#EMIT("CLEARVALUE", {INDEX: INDEX, COLUMN: COLUMN})
     }
   }
 
@@ -235,6 +274,8 @@ class DATABASE {
           this.SAVE(this.#AUTOFILE);
         }
       });
+
+      this.#EMIT("CLEARCOLUMN", {COLUMN: COLUMN})
     } else {
     }
   }
@@ -256,6 +297,8 @@ class DATABASE {
           if (this.#AUTOSAVE) {
             this.SAVE(this.#AUTOFILE);
           }
+
+          this.#EMIT("DELETECOLUMN", {COLUMN: COLUMN})
         } else {
         }
       });
@@ -383,6 +426,7 @@ class DATABASE {
 
   SETAUTOFILE(AUTOFILE) {
     this.#AUTOFILE = AUTOFILE;
+    this.#EMIT("SETAUTOFILE", {AUTOFILE: this.#AUTOFILE})
   }
 
   GETAUTOFILE() {
@@ -391,6 +435,20 @@ class DATABASE {
 
   GETINDEXLENGTH() {
     return this.#DATA.length;
+  }
+
+  TOGGLEEVENTS(){
+    if(this.#EVENTS === false){
+      this.#EVENTS = true
+    }else if(this.#EVENTS === true){
+      this.#EVENTS = false
+    }
+  }
+
+  SETEVENTS(PARAM){
+    if(typeof PARAM === "boolean"){
+      this.#EVENTS = PARAM
+    }
   }
 }
 
